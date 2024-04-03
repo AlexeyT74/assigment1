@@ -58,6 +58,7 @@ function getContactById(ID, array) {
     const element = array[index];
     if (element.id.value == ID) return element;
   }
+  return null;
 }
 console.log(getContactById("120683-8869", sortedByLastNameArr));
 
@@ -72,6 +73,20 @@ function countByCountry(countryStr, array) {
 console.log(
   `In Spain live ${countByCountry("Spain", sortedByLastNameArr)} contacts`
 );
+
+// Context
+function objectByCountry(array) {
+  return array.reduce((accum, contact) => {
+    let num = accum[contact.location.country];
+    if (accum[contact.location.country]) {
+      accum[contact.location.country]++;
+    } else {
+      accum[contact.location.country] = 1;
+    }
+    return accum;
+  }, {});
+}
+console.log(objectByCountry(sortedByLastNameArr));
 
 // Write a function that returns a new array of contacts that are within a given age range, e.g., 25 to 35 years old.
 function filterByAge(min, max, array) {
@@ -130,7 +145,7 @@ function getName(str, array) {
   const result = [];
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    if (element.name.first === str || element.name.last === str) {
+    if (element.name.first.includes(str) || element.name.last.includes(str)) {
       result.push(
         `${element.name.first} ${element.name.last}, tel:${element.phone}`
       );
@@ -144,7 +159,7 @@ function getPhone(str, array) {
   const result = [];
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    if (element.phone === str) {
+    if (element.phone.includes(str)) {
       result.push(
         `${element.name.first} ${element.name.last}, tel:${element.phone}`
       );
